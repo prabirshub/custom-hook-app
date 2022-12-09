@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect, useRef } from 'react'
+import './App.css'
 
 function App() {
+  const [day, setDay] = useState('Monday')
+  const prevDay = usePrevious(day)
+  const getNextDay = () => {
+    if (day === 'Monday') {
+      setDay('Tuesday')
+    } else if (day === 'Tuesday') {
+      setDay('Wednesday')
+    } else if (day === 'Wednesday') {
+      setDay('Thursday')
+    } else if (day === 'Thursday') {
+      setDay('Friday')
+    } else if (day === 'Friday') {
+      setDay('Monday')
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ padding: '40px' }} className='App'>
+      <h1>
+        Today is : {day} <br />
+        {prevDay && <span>Previous work day was: {prevDay}</span>}
+      </h1>
+      <button onClick={getNextDay}>Get next day</button>
     </div>
-  );
+  )
+}
+function usePrevious(val) {
+  const ref = useRef()
+
+  useEffect(
+    (current) => {
+      ref.current = val
+    },
+    [val]
+  )
+  return ref.current
 }
 
-export default App;
+export default App
